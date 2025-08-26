@@ -6,8 +6,8 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background: linear-gradient(135deg, #ea6666 0%, #993c3c 100%);
     min-height: 100vh;
     color: #333;
 }
@@ -115,7 +115,7 @@ header p {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+    background: linear-gradient(90deg, #df2222, #e79473, #eb954e, #da5838, #f53d25);
 }
 
 .pokemon-id {

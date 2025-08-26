@@ -60,7 +60,7 @@ async function loadPokemon() {
         // TODO 1.3: Crear un bucle for que vaya del 1 al 5
         // Dentro del bucle, añade al array las promesas de fetchPokemonData(i)
         // PISTA: usa nombreArray.push(fetchPokemonData(i))
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 1; i <= 1000; i++) {
             pokemonPromises.push(fetchPokemonData(i));
         }
         
@@ -113,9 +113,10 @@ async function loadPokemon() {
        "front_default": "https://..."
      }
    }
+     
+   
    
 ============================================== */
-
 async function fetchPokemonData(pokemonId) {
     try {
         // TODO 2.1: Hacer una petición fetch a la API
@@ -123,20 +124,32 @@ async function fetchPokemonData(pokemonId) {
         // ¿Por qué usamos await? ¡Porque fetch() devuelve una promesa!
         
         /* ESCRIBE TU CÓDIGO AQUÍ */
+        const response = await fetch(POKEAPI_BASE_URL + pokemonId);
+        console.log('respuesta de la api:',response);
         
         
         // TODO 2.2: Verificar si la respuesta es exitosa
         // PISTA: if (!response.ok) { throw new Error(`Error HTTP: ${response.status}`); }
         
         /* ESCRIBE TU CÓDIGO AQUÍ */
-        
+        if (!response.ok) { throw new Error(`Error HTTP: ${response.status}`); }
+
         
         // TODO 2.3: Convertir la respuesta a JSON
         // PISTA: const pokemonData = await response.json();
         // ¿Por qué usamos await? ¡Porque .json() también devuelve una promesa!
         
         /* ESCRIBE TU CÓDIGO AQUÍ */
-        
+        const pokemonData = await response.json();
+
+        console.log('datos de api:',pokemonData),{
+             id: pokemonData.id,
+             name:  pokemonData.name,
+             height: pokemonData.height,
+             weight: pokemonData.weight,
+             types: pokemonData.types.map(type => type.type.name),
+             sprite:pokemonData.sprites.other['official-artwork'].front_default || pokemonData.sprites.front_default
+        };
         
         // TODO 2.4: Extraer y devolver solo los datos que necesitamos
         // PISTA: Devuelve un objeto con: id, name, height, weight, types, sprite
@@ -145,12 +158,12 @@ async function fetchPokemonData(pokemonId) {
         
         /* ESCRIBE TU CÓDIGO AQUÍ */
         return {
-            // id: ?,
-            // name: ?,
-            // height: ?,
-            // weight: ?,
-            // types: ?,
-            // sprite: ?
+             id: pokemonData.id,
+             name:  pokemonData.name,
+             height: pokemonData.height,
+             weight: pokemonData.weight,
+             types: pokemonData.types.map(type => type.type.name),
+             sprite:pokemonData.sprites.other['official-artwork'].front_default || pokemonData.sprites.front_default
         };
         
     } catch (error) {
@@ -158,7 +171,8 @@ async function fetchPokemonData(pokemonId) {
         // PISTA: Muestra el error en consola y relanza el error con throw
         
         /* ESCRIBE TU CÓDIGO AQUÍ */
-        
+        console.error('Error al obtener datos del Pokemon:', error);
+        throw error;
         
     }
 }
@@ -172,10 +186,16 @@ async function fetchPokemonData(pokemonId) {
 ============================================== */
 
 function renderPokemonCards(pokemonList) {
-    // TODO 3.1: Limpiar el contenedor
+ 
+
+
+   
+// TODO 3.1: Limpiar el contenedor
     // PISTA: pokemonContainer.innerHTML = '';
     
     /* ESCRIBE TU CÓDIGO AQUÍ */
+       pokemonContainer.innerHTML = '';
+    
     
     
     // TODO 3.2: Crear una tarjeta para cada Pokemon
@@ -183,10 +203,13 @@ function renderPokemonCards(pokemonList) {
     // Dentro del forEach, usa createPokemonCard() y appendChild()
     
     /* ESCRIBE TU CÓDIGO AQUÍ */
-    
-    
-}
+  
 
+     pokemonList.forEach(pokemon => {
+        const card = createPokemonCard(pokemon);
+        pokemonContainer.appendChild(card);
+    });
+    
 /* ==============================================
    🎨 FUNCIONES YA COMPLETADAS
    ==============================================
@@ -195,6 +218,7 @@ function renderPokemonCards(pokemonList) {
    enfocarte en los ejercicios principales.
    
 ============================================== */
+}
 
 // ✅ Función para crear una tarjeta individual de Pokemon (YA COMPLETADA)
 function createPokemonCard(pokemon) {
